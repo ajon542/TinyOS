@@ -9,61 +9,82 @@ static void print(const char* data, size_t data_length)
 		putchar((int) ((const unsigned char*) data)[i]);
 }
 
-int printf(const char* restrict format, ...)
+int printf(const char* format, ...)
 {
-	va_list parameters;
+	// Obtain the list of parameters.
+    va_list parameters;
 	va_start(parameters, format);
 
-	int written = 0;
-	size_t amount;
-	bool rejected_bad_specifier = false;
+	size_t amount = 0;
 
-	while ( *format != '\0' )
+	while (*format != '\0')
 	{
-		if ( *format != '%' )
+		// Print normal characters.
+		if (*format != '%')
 		{
-		print_c:
-			amount = 1;
-			while ( format[amount] && format[amount] != '%' )
-				amount++;
-			print(format, amount);
-			format += amount;
-			written += amount;
+			print(format, sizeof(char));
+
+			++amount;
+			++format;
 			continue;
 		}
 
-		const char* format_begun_at = format;
+		// Found a format character '%', absorb it.
+		++format;
 
-		if ( *(++format) == '%' )
-			goto print_c;
-
-		if ( rejected_bad_specifier )
+		// Determine what format to print.
+		if (*format == 'c')
 		{
-		incomprehensible_conversion:
-			rejected_bad_specifier = true;
-			format = format_begun_at;
-			goto print_c;
-		}
-
-		if ( *format == 'c' )
-		{
-			format++;
-			char c = (char) va_arg(parameters, int /* char promotes to int */);
+			// Character format.
+			char c = (char)va_arg(parameters, int); // char promotes to int
 			print(&c, sizeof(c));
+
+			++amount;
+			++format;
 		}
-		else if ( *format == 's' )
+		else if (*format == 's')
 		{
-			format++;
-			const char* s = va_arg(parameters, const char*);
-			print(s, strlen(s));
+			// String format.
+			const char* data = va_arg(parameters, const char*);
+			size_t data_length = strlen(data);
+			print(data, data_length);
+
+			amount += data_length;
+			++format;
+		}
+		else if (*format == 'x')
+		{
+			// Hexadecimal format.
+			const char* hexValues = "0123456789ABCDEF";
+			const size_t data_length = 8;
+			char hexResult[data_length];
+
+			int val = va_arg(parameters, int);
+			
+			// Convert int to hex format.
+			for (int i = data_length - 1; i >= 0; --i)
+			{
+				int hexIndex = val & 0xF;
+				hexResult[i] = hexValues[hexIndex];
+				val >>= 4;
+			}
+
+			print(hexResult, data_length);
+
+			amount += data_length;
+			++format;
 		}
 		else
 		{
-			goto incomprehensible_conversion;
+			// Backup the pointer and add print the character.
+			--format;
+			print(format, sizeof(char));
+			++amount;
+			++format;
 		}
 	}
 
 	va_end(parameters);
 
-	return written;
+	return amount;
 }
