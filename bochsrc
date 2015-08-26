@@ -1,0 +1,27 @@
+###############################################################
+# Configuration file for Bochs
+###############################################################
+
+# how much memory the emulated machine will have
+megs: 32
+
+# filename of ROM images
+romimage: file=C:\development\TinyOS\bochs\bochs-install\BIOS-bochs-latest
+vgaromimage: file=C:\development\TinyOS\bochs\bochs-install\VGABIOS-lgpl-latest
+
+# Tell bochs to use our boot sector code as though it were 
+# a floppy disk inserted into a computer at boot time. 
+#floppya: 1_44=os-image, status=inserted
+ata0-master: type=cdrom, path=myos.iso, status=inserted
+
+# choose the boot disk.
+boot: cdrom
+
+# where do we send log messages?
+#log: bochsout.txt
+
+# disable the mouse
+mouse: enabled=0
+
+# enable key mapping, using US layout as default.
+keyboard: keymap=C:\development\TinyOS\bochs\bochs-install\keymaps\x11-pc-us.map
