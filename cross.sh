@@ -1,3 +1,5 @@
+set -e
+
 #
 # This script obtains the sources for and builds a cross compiler
 # for the i686-elf target.
