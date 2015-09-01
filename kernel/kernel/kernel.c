@@ -4,15 +4,10 @@
 #include <stdio.h>
 #include <kernel/tty.h>
 
-void kernel_test(uint32_t a, uint32_t b)
+void kernel_test(uint32_t eax, uint32_t ebx)
 {
-	//putchar(i+49);
-	putchar(a);
-	putchar(b);
-    
-    printf("Hello\n");
-	printf("Hello %c\n", 'a');
-    printf("%x\n", 2000);
+    printf("eax: %x\n", eax);
+    printf("ebx: %x\n", ebx);
 }
 
 void kernel_early(void)

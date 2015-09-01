@@ -25,15 +25,30 @@ stack_top:
 _start:
 	movl $stack_top, %esp
 
-	# Initialize the core kernel before running the global constructors.
+    # ‘EAX’
+    # Must contain the magic value ‘0x2BADB002’;
+    # the presence of this value indicates to the operating system that it was loaded 
+    # by a Multiboot-compliant boot loader (e.g. as opposed to another type of boot 
+    # loader that the operating system can also be loaded from). 
+    # ‘EBX’
+    # Must contain the 32-bit physical address of the Multiboot information structure
+    # provided by the boot loader (see Boot information format).     
+    
+    # Save the register values.
+    pushl %ebx
+    pushl %eax
+    
+	# Initialize the core kernel before running the global constructors.   
 	call kernel_early
     
-    	pushl $49
-    	pushl $50
-	#pushl %ebx
-	#pushl %eax
+    # Restore the register values.
+    popl %eax
+    popl %ebx
+
+    pushl %ebx
+    pushl %eax
     
-    	call kernel_test
+    call kernel_test
     
 	# Call the global constructors.
 	call _init
