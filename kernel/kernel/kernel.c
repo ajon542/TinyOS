@@ -118,7 +118,18 @@ void kernel_early(void)
 	terminal_initialize();
 }
 
+/* prototype for asm function */
+int * asm_mod_array(int *ptr,int size);
+
 void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
+    int fren[5]={ 1, 2, 3, 4, 5 };
+    int i = 0;
+    asm_mod_array(fren, 5);
+    DebugPrint("Called asm_mod_arr\n");
+    for(i = 0; i < 5; ++i)
+    {
+        DebugPrint("%d\n", fren[i]);
+    }
 }
