@@ -17,7 +17,7 @@ void kernel_test(uint32_t magic, uint32_t addr)
     // Am I booted by a Multiboot-compliant boot loader?
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
     {
-        printf("Invalid magic number: 0x%x\n", (unsigned) magic);
+        DebugPrint("Invalid magic number: 0x%x\n", (unsigned) magic);
         return;
     }
     
@@ -25,25 +25,25 @@ void kernel_test(uint32_t magic, uint32_t addr)
     mbi = (multiboot_info_t *) addr;
     
     // Print out the flags.
-    printf("flags = 0x%x\n", (unsigned) mbi->flags);
+    DebugPrint("flags = 0x%x\n", (unsigned) mbi->flags);
     
     // Are mem_* valid?
     if (CHECK_FLAG(mbi->flags, 0))
     {
-        printf("mem_lower = %xKB, mem_upper = %xKB\n",
+        DebugPrint("mem_lower = %d KB, mem_upper = %d KB\n",
             (unsigned) mbi->mem_lower, (unsigned) mbi->mem_upper);
     }
     
     // Is boot_device valid?
     if (CHECK_FLAG (mbi->flags, 1))
     {
-        printf("boot_device = 0x%x\n", (unsigned) mbi->boot_device);
+        DebugPrint("boot_device = 0x%x\n", (unsigned) mbi->boot_device);
     }
     
     // Is the command line passed?
     if (CHECK_FLAG (mbi->flags, 2))
     {
-        printf("cmdline = %s\n", (char *) mbi->cmdline);
+        DebugPrint("cmdline = %s\n", (char *) mbi->cmdline);
     }
     
     // Are mods_* valid?
@@ -52,11 +52,11 @@ void kernel_test(uint32_t magic, uint32_t addr)
         multiboot_module_t *mod;
         int i;
      
-        printf ("mods_count = 0x%x, mods_addr = 0x%x\n", (int) mbi->mods_count, (int) mbi->mods_addr);
+        DebugPrint("mods_count = 0x%x, mods_addr = 0x%x\n", (int) mbi->mods_count, (int) mbi->mods_addr);
         
         for (i = 0, mod = (multiboot_module_t *) mbi->mods_addr; i < (int) mbi->mods_count; i++, mod++)
         {
-            printf(" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n",
+            DebugPrint(" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n",
                 (unsigned) mod->mod_start,
                 (unsigned) mod->mod_end,
                 (char *) mod->cmdline);
@@ -66,7 +66,7 @@ void kernel_test(uint32_t magic, uint32_t addr)
     // Bits 4 and 5 are mutually exclusive!
     if (CHECK_FLAG (mbi->flags, 4) && CHECK_FLAG (mbi->flags, 5))
     {
-        printf ("Both bits 4 and 5 are set.\n");
+        DebugPrint("Both bits 4 and 5 are set.\n");
         return;
     }
      
@@ -75,7 +75,7 @@ void kernel_test(uint32_t magic, uint32_t addr)
     {
         multiboot_aout_symbol_table_t *multiboot_aout_sym = &(mbi->u.aout_sym);
      
-        printf ("multiboot_aout_symbol_table: tabsize = 0x%0x, strsize = 0x%x, addr = 0x%x\n",
+        DebugPrint("multiboot_aout_symbol_table: tabsize = 0x%0x, strsize = 0x%x, addr = 0x%x\n",
             (unsigned) multiboot_aout_sym->tabsize,
             (unsigned) multiboot_aout_sym->strsize,
             (unsigned) multiboot_aout_sym->addr);
@@ -86,7 +86,7 @@ void kernel_test(uint32_t magic, uint32_t addr)
     {
         multiboot_elf_section_header_table_t *multiboot_elf_sec = &(mbi->u.elf_sec);
      
-        printf ("multiboot_elf_sec: num = %u, size = 0x%x, addr = 0x%x, shndx = 0x%x\n",
+        DebugPrint("multiboot_elf_sec: num = %u, size = 0x%x, addr = 0x%x, shndx = 0x%x\n",
             (unsigned) multiboot_elf_sec->num, (unsigned) multiboot_elf_sec->size,
             (unsigned) multiboot_elf_sec->addr, (unsigned) multiboot_elf_sec->shndx);
     }
@@ -96,13 +96,13 @@ void kernel_test(uint32_t magic, uint32_t addr)
     {
         multiboot_memory_map_t *mmap;
      
-        printf ("mmap_addr = 0x%x, mmap_length = 0x%x\n",
+        DebugPrint("mmap_addr = 0x%x, mmap_length = 0x%x\n",
             (unsigned) mbi->mmap_addr, (unsigned) mbi->mmap_length);
     
         for (mmap = (multiboot_memory_map_t *) mbi->mmap_addr;
             (unsigned long) mmap < mbi->mmap_addr + mbi->mmap_length;
             mmap = (multiboot_memory_map_t *) ((unsigned long) mmap + mmap->size + sizeof (mmap->size)))
-            printf (" size = 0x%x, base_addr = 0x%x%x, length = 0x%x%x, type = 0x%x\n",
+            DebugPrint(" size = 0x%x, base_addr = 0x%x%x, length = 0x%x%x, type = 0x%x\n",
                 (unsigned) mmap->size,
                 (unsigned) (mmap->addr >> 32),
                 (unsigned) (mmap->addr & 0xffffffff),
@@ -120,12 +120,5 @@ void kernel_early(void)
 
 void kernel_main(void)
 {
-	printf("Hello, kernel World - Tiny OS!\n");
-    
-    DebugPrint("Debug Print %d\n", 12345);
-    DebugPrint("Debug Print %x\n", 1024);
-    DebugPrint("Debug Print\n");
-    DebugPrint("Debug Print\n");
-    
-    
+	DebugPrint("Hello, kernel World - Tiny OS!\n");
 }
