@@ -121,4 +121,11 @@ void kernel_early(void)
 void kernel_main(void)
 {
 	printf("Hello, kernel World - Tiny OS!\n");
+    
+    DebugPrint("Debug Print %d\n", 12345);
+    DebugPrint("Debug Print %x\n", 1024);
+    DebugPrint("Debug Print\n");
+    DebugPrint("Debug Print\n");
+    
+    
 }
