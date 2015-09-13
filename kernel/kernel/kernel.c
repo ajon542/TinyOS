@@ -113,13 +113,18 @@ void kernel_test(uint32_t magic, uint32_t addr)
 
 }
 
+extern void gdt_install(void);
+
 void kernel_early(void)
 {
 	terminal_initialize();
+
+	DebugPrint("Installing GDT...\n");
+	gdt_install();
 }
 
-/* prototype for asm function */
-int * asm_mod_array(int *ptr, int size);
+// prototype for asm function
+int* asm_mod_array(int *ptr, int size);
 void set_gdt();
 
 void kernel_main(void)
