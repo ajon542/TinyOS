@@ -69,11 +69,6 @@ _start:
     # Restore the register values.
     popl %eax
     popl %ebx
-
-    pushl %ebx
-    pushl %eax
-    
-    call kernel_test
     
 	# Call the global constructors.
 	call _init

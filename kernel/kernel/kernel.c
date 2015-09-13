@@ -10,9 +10,16 @@
 // Check if the bit BIT in FLAGS is set.
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
-void kernel_test(uint32_t magic, uint32_t addr)
+extern void gdt_install(void);
+
+void kernel_early(uint32_t magic, uint32_t addr)
 {
-	multiboot_info_t *mbi;
+	// Intialize basic terminal functionality.
+	terminal_initialize();
+
+	DebugPrint("Terminal initialized\n");
+
+	multiboot_info_t* mbi;
 
 	// Am I booted by a Multiboot-compliant boot loader?
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
@@ -110,14 +117,6 @@ void kernel_test(uint32_t magic, uint32_t addr)
 			(unsigned)(mmap->len & 0xffffffff),
 			(unsigned)mmap->type);
 	}
-
-}
-
-extern void gdt_install(void);
-
-void kernel_early(void)
-{
-	terminal_initialize();
 
 	DebugPrint("Installing GDT...\n");
 	gdt_install();
