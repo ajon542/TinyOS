@@ -2,11 +2,19 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-// TODO: Fix this nonsense.
 #include "../include/kernel/tss.h"
 
+// Global Descriptor Table.
+// http://wiki.osdev.org/Global_Descriptor_Table
+
+// GDT Entry.
 typedef struct
 {
+	// The base is a 32 bit value containing the linear address where the segment begins.
+	// The limit, a 20 bit value, tells the maximum addressable unit (either in 1 byte units,
+	// or in pages). Hence, if you choose page granularity (4 KiB) and set the limit value to
+	// 0xFFFFF the segment will span the full 4 GiB address space.
+
 	// Limits
 	uint16_t limit_low;
 
@@ -20,12 +28,14 @@ typedef struct
 	uint8_t base_high;
 } __attribute__((packed)) gdt_entry_t;
 
+// GDT Pointer.
 typedef struct
 {
 	uint16_t limit;
 	uintptr_t base;
 } __attribute__((packed)) gdt_pointer_t;
 
+// GDT.
 static struct
 {
 	gdt_entry_t entries[6];
@@ -55,12 +65,13 @@ void gdt_set_gate(uint8_t num, uint64_t base, uint64_t limit, uint8_t access, ui
 	ENTRY(num).access = access;
 }
 
-static void write_tss(int32_t num, uint16_t ss0, uint32_t esp0) {
-	tss_entry_t * tss = &gdt.tss;
+static void write_tss(int32_t num, uint16_t ss0, uint32_t esp0)
+{
+	tss_entry_t* tss = &gdt.tss;
 	uintptr_t base = (uintptr_t)tss;
 	uintptr_t limit = base + sizeof *tss;
 
-	/* Add the TSS descriptor to the GDT */
+	// Add the TSS descriptor to the GDT
 	gdt_set_gate(num, base, limit, 0xE9, 0x00);
 
 	memset(tss, 0x0, sizeof *tss);
@@ -79,7 +90,7 @@ static void write_tss(int32_t num, uint16_t ss0, uint32_t esp0) {
 
 void gdt_install(void)
 {
-	gdt_pointer_t *gdtp = &gdt.pointer;
+	gdt_pointer_t* gdtp = &gdt.pointer;
 	gdtp->limit = sizeof gdt.entries - 1;
 	gdtp->base = (uintptr_t)&ENTRY(0);
 
@@ -88,7 +99,7 @@ void gdt_install(void)
 	gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // Data segment
 	gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // User code
 	gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // User data
-	
+
 	write_tss(5, 0x10, 0x0);
 
 	gdt_flush((uintptr_t)gdtp);

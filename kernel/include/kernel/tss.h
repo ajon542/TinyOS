@@ -3,6 +3,8 @@
 
 extern void tss_flush(void);
 
+// Task State Segment
+// http://wiki.osdev.org/TSS
 typedef struct tss_entry
 {
 	uint32_t	prev_tss;
