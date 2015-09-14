@@ -11,6 +11,7 @@
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
 extern void gdt_install(void);
+extern void idt_install(void);
 
 void kernel_early(uint32_t magic, uint32_t addr)
 {
@@ -120,6 +121,8 @@ void kernel_early(uint32_t magic, uint32_t addr)
 
 	DebugPrint("Installing GDT...\n");
 	gdt_install();
+	DebugPrint("Installing IDT...\n");
+	idt_install();
 }
 
 // prototype for asm function
