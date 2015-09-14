@@ -132,6 +132,12 @@ void set_gdt();
 void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
+
+	// Testing interrupt handlers.
+	asm volatile ("int $0x1");
+	asm volatile ("int $0x2");
+	asm volatile ("int $0x3");
+
 	int fren[5] = { 1, 2, 3, 4, 5 };
 	int i = 0;
 	asm_mod_array(fren, 5);
