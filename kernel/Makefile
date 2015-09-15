@@ -32,6 +32,7 @@ kernel/kernel.o \
 kernel/gdt.o \
 kernel/idt.o \
 kernel/isr.o \
+kernel/panic.o \
 
 CRTI_OBJ:=$(ARCHDIR)/crti.o
 CRTBEGIN_OBJ:=$(shell $(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=crtbegin.o)
