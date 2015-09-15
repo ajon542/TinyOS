@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "../include/kernel/system.h"
+#include <kernel/system.h>
 
 void panic(char* message, registers_t* regs)
 {

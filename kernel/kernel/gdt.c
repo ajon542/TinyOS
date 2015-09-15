@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include "../include/kernel/tss.h"
+#include <kernel/tss.h>
 
 // Global Descriptor Table.
 // http://wiki.osdev.org/Global_Descriptor_Table

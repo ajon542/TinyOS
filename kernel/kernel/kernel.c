@@ -2,10 +2,9 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include <kernel/tty.h>
 
-// TODO: This needs to be fixed, just not sure where to put it.
-#include <../arch/i386/include/multiboot.h>
+#include <kernel/tty.h>
+#include <kernel/multiboot.h>
 
 // Check if the bit BIT in FLAGS is set.
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
