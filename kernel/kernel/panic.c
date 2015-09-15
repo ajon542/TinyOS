@@ -14,7 +14,7 @@ void panic(char* message, registers_t* regs)
 
 	if (regs) 
 	{
-		DebugPrint("Registers at interrupt:\n");
+		DebugPrint("Registers at interrupt [0x%x]:\n", regs->int_no);
 		DebugPrint("eax=0x%x\n", regs->eax);
 		DebugPrint("ebx=0x%x\n", regs->ebx);
 		DebugPrint("ecx=0x%x\n", regs->ecx);

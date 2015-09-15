@@ -1,7 +1,6 @@
 #ifndef _SYSTEM_H
 #define _SYSTEM_H
 
-// TODO: Probably belongs in isr.h
 typedef struct registers
 {
 	uint32_t gs, fs, es, ds;
@@ -11,16 +10,19 @@ typedef struct registers
 
 } registers_t;
 
-typedef int(*irq_handler_chain_t) (registers_t *);
+// Implemented in idt.c
 typedef void(*idt_gate_t)(void);
+void idt_set_gate(uint8_t num, idt_gate_t base, uint16_t sel, uint8_t flags);
 
-// TODO: Probably belongs in panic.h
+// Implemented in panic.c
 void panic(char* message, registers_t* regs);
 
+// Implemented in irq.c
 void int_disable();
 void int_enable();
 void int_resume();
 
+// Implemented in system.c
 unsigned short inports(unsigned short port);
 void outports(unsigned short port, unsigned short data);
 unsigned int inportl(unsigned short port);

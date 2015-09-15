@@ -2,8 +2,8 @@
 .align 4
 
 .macro ISR_NOERR index
-    .global _isr\index
-    _isr\index:
+    .global isr\index
+    isr\index:
         cli
         push $0
         push $\index
@@ -11,8 +11,8 @@
 .endm
 
 .macro ISR_ERR index
-    .global _isr\index
-    _isr\index:
+    .global isr\index
+    isr\index:
         cli
         push $\index
         jmp isr_common

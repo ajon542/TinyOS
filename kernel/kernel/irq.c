@@ -30,22 +30,22 @@
 		             "2:"); \
 					} while (0)
 
-extern void _irq0();
-extern void _irq1();
-extern void _irq2();
-extern void _irq3();
-extern void _irq4();
-extern void _irq5();
-extern void _irq6();
-extern void _irq7();
-extern void _irq8();
-extern void _irq9();
-extern void _irq10();
-extern void _irq11();
-extern void _irq12();
-extern void _irq13();
-extern void _irq14();
-extern void _irq15();
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
 
 // Interrupts.
 static volatile int sync_depth = 0;
@@ -102,6 +102,7 @@ void int_enable(void)
 #define IRQ_CHAIN_SIZE  16
 #define IRQ_CHAIN_DEPTH 4
 
+typedef int(*irq_handler_chain_t) (registers_t *);
 static void(*irqs[IRQ_CHAIN_SIZE])(void);
 static irq_handler_chain_t irq_routines[IRQ_CHAIN_SIZE * IRQ_CHAIN_DEPTH] = { NULL };
 
@@ -151,7 +152,6 @@ static void irq_remap(void)
 	outportb(PIC2_DATA, 0x01); PIC_WAIT();
 }
 
-extern void idt_set_gate(uint8_t num, idt_gate_t base, uint16_t sel, uint8_t flags);
 static void irq_setup_gates(void)
 {
 	for (size_t i = 0; i < IRQ_CHAIN_SIZE; i++)
@@ -171,22 +171,22 @@ void irq_ack(size_t irq_no)
 
 void irq_install(void)
 {
-	irqs[0] = _irq0;
-	irqs[1] = _irq1;
-	irqs[2] = _irq2;
-	irqs[3] = _irq3;
-	irqs[4] = _irq4;
-	irqs[5] = _irq5;
-	irqs[6] = _irq6;
-	irqs[7] = _irq7;
-	irqs[8] = _irq8;
-	irqs[9] = _irq9;
-	irqs[10] = _irq10;
-	irqs[11] = _irq11;
-	irqs[12] = _irq12;
-	irqs[13] = _irq13;
-	irqs[14] = _irq14;
-	irqs[15] = _irq15;
+	irqs[0] = irq0;
+	irqs[1] = irq1;
+	irqs[2] = irq2;
+	irqs[3] = irq3;
+	irqs[4] = irq4;
+	irqs[5] = irq5;
+	irqs[6] = irq6;
+	irqs[7] = irq7;
+	irqs[8] = irq8;
+	irqs[9] = irq9;
+	irqs[10] = irq10;
+	irqs[11] = irq11;
+	irqs[12] = irq12;
+	irqs[13] = irq13;
+	irqs[14] = irq14;
+	irqs[15] = irq15;
 
 	irq_remap();
 	irq_setup_gates();
