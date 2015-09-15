@@ -11,6 +11,7 @@
 
 extern void gdt_install(void);
 extern void idt_install(void);
+extern void irq_install(void);
 
 void kernel_early(uint32_t magic, uint32_t addr)
 {
@@ -122,27 +123,12 @@ void kernel_early(uint32_t magic, uint32_t addr)
 	gdt_install();
 	DebugPrint("Installing IDT...\n");
 	idt_install();
+	DebugPrint("Installing IRQ...\n");
+	irq_install();
 }
-
-// prototype for asm function
-int* asm_mod_array(int *ptr, int size);
-void set_gdt();
 
 void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
-
-	// Testing interrupt handlers.
 	asm volatile ("int $0x1");
-	asm volatile ("int $0x2");
-	asm volatile ("int $0x3");
-
-	int fren[5] = { 1, 2, 3, 4, 5 };
-	int i = 0;
-	asm_mod_array(fren, 5);
-	DebugPrint("Called asm_mod_arr\n");
-	for (i = 0; i < 5; ++i)
-	{
-		DebugPrint("%d\n", fren[i]);
-	}
 }

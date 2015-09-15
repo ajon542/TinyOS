@@ -11,7 +11,23 @@ typedef struct registers
 
 } registers_t;
 
+typedef int(*irq_handler_chain_t) (registers_t *);
+typedef void(*idt_gate_t)(void);
+
 // TODO: Probably belongs in panic.h
 void panic(char* message, registers_t* regs);
+
+void int_disable();
+void int_enable();
+void int_resume();
+
+unsigned short inports(unsigned short port);
+void outports(unsigned short port, unsigned short data);
+unsigned int inportl(unsigned short port);
+void outportl(unsigned short port, unsigned int data);
+unsigned char inportb(unsigned short port);
+void outportb(unsigned short port, unsigned char data);
+void outportsm(unsigned short port, unsigned char* data, unsigned long size);
+void inportsm(unsigned short port, unsigned char* data, unsigned long size);
 
 #endif // _SYSTEM_H

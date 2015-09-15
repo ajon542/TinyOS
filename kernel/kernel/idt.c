@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 
+#include <kernel/system.h>
+
 // Interrupt Descriptor Table.
 // http://wiki.osdev.org/Interrupt_Descriptor_Table
 
@@ -28,8 +30,6 @@ static struct
 } idt __attribute__((used));
 
 #define ENTRY(X) (idt.entries[(X)])
-
-typedef void(*idt_gate_t)(void);
 
 extern void idt_load(uintptr_t);
 

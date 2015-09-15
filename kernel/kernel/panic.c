@@ -7,7 +7,7 @@
 
 void panic(char* message, registers_t* regs)
 {
-	// TODO: IRQ_OFF
+	int_disable();
 
 	DebugPrint("----------- PANIC -----------\n");
 	DebugPrint(message);
