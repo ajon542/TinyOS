@@ -18,7 +18,7 @@ void kernel_early(uint32_t magic, uint32_t addr)
 	// Intialize basic terminal functionality.
 	terminal_initialize();
 
-	DebugPrint("Terminal initialized\n");
+	DebugPrint("Processing Multiboot Information\n");
 
 	multiboot_info_t* mbi;
 
@@ -130,5 +130,4 @@ void kernel_early(uint32_t magic, uint32_t addr)
 void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
-	asm volatile ("int $0x1");
 }
