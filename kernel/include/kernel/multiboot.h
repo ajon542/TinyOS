@@ -182,7 +182,7 @@ struct multiboot_mod_list
 };
 typedef struct multiboot_mod_list multiboot_module_t;
 
-void print_multiboot_info(uint32_t magic, uint32_t addr);
+void parse_multiboot_info(uint32_t magic, multiboot_info_t* mbi);
 
 #endif // ASM_FILE
 

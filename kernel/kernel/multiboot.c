@@ -4,11 +4,11 @@
 // Check if the bit BIT in FLAGS is set.
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
-void print_multiboot_info(uint32_t magic, uint32_t addr)
+void parse_multiboot_info(uint32_t magic, multiboot_info_t* mbi)
 {
 	DebugPrint("Processing Multiboot Information\n");
 
-	multiboot_info_t* mbi;
+	//multiboot_info_t* mbi;
 
 	// Am I booted by a Multiboot-compliant boot loader?
 	if (magic != MULTIBOOT_BOOTLOADER_MAGIC)
@@ -18,7 +18,7 @@ void print_multiboot_info(uint32_t magic, uint32_t addr)
 	}
 
 	// Set MBI to the address of the Multiboot information structure.
-	mbi = (multiboot_info_t *)addr;
+	//mbi = (multiboot_info_t *)addr;
 
 	// Print out the flags.
 	DebugPrint("flags = 0x%x\n", (unsigned)mbi->flags);
