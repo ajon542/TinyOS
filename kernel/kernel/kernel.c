@@ -1,17 +1,14 @@
-#include <stddef.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
 
 #include <kernel/tty.h>
 #include <kernel/multiboot.h>
+#include <kernel/system.h>
 
 // Check if the bit BIT in FLAGS is set.
 #define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
 
 extern void gdt_install(void);
 extern void idt_install(void);
-extern void irq_install(void);
+extern void irq_install(void); 
 
 void kernel_early(uint32_t magic, uint32_t addr)
 {
@@ -130,4 +127,9 @@ void kernel_early(uint32_t magic, uint32_t addr)
 void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
+
+	asm volatile("sti");
+	init_timer(50);
+
+	while (1) {}
 }

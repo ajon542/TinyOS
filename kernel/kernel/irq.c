@@ -102,7 +102,7 @@ void int_enable(void)
 #define IRQ_CHAIN_SIZE  16
 #define IRQ_CHAIN_DEPTH 4
 
-typedef int(*irq_handler_chain_t) (registers_t *);
+
 static void(*irqs[IRQ_CHAIN_SIZE])(void);
 static irq_handler_chain_t irq_routines[IRQ_CHAIN_SIZE * IRQ_CHAIN_DEPTH] = { NULL };
 
@@ -194,6 +194,8 @@ void irq_install(void)
 
 void irq_handler(registers_t *r)
 {
+	DebugPrint("int_no: %d\n", r->int_no);
+
 	// Disable interrupts when handling
 	int_disable();
 	if (r->int_no <= 47 && r->int_no >= 32)
