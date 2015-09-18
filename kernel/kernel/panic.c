@@ -1,8 +1,3 @@
-#include <stddef.h>
-#include <stdint.h>
-#include <string.h>
-#include <stdio.h>
-
 #include <kernel/system.h>
 
 void panic(char* message, registers_t* regs)

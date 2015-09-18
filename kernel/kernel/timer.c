@@ -1,4 +1,3 @@
-
 #include <kernel/system.h>
 
 #define PIT_A 0x40

@@ -1,4 +1,3 @@
-
 #include <kernel/tty.h>
 #include <kernel/multiboot.h>
 #include <kernel/system.h>
@@ -128,8 +127,7 @@ void kernel_main(void)
 {
 	DebugPrint("Hello, kernel World - Tiny OS!\n");
 
-	asm volatile("sti");
-	init_timer(50);
+	//init_timer(50);
 
 	while (1) {}
 }
