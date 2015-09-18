@@ -15,7 +15,12 @@ typedef struct registers
 
 } registers_t;
 
+
+// Implemented in gtc.c
+void gdt_install();
+
 // Implemented in idt.c
+void idt_install();
 typedef void(*idt_gate_t)(void);
 void idt_set_gate(uint8_t num, idt_gate_t base, uint16_t sel, uint8_t flags);
 
@@ -23,6 +28,7 @@ void idt_set_gate(uint8_t num, idt_gate_t base, uint16_t sel, uint8_t flags);
 void panic(char* message, registers_t* regs);
 
 // Implemented in irq.c
+void irq_install();
 void int_disable();
 void int_enable();
 void int_resume();
@@ -32,14 +38,14 @@ typedef int(*irq_handler_chain_t) (registers_t *);
 void irq_install_handler(size_t irq, irq_handler_chain_t handler);
 
 // Implemented in system.c
-unsigned short inports(unsigned short port);
-void outports(unsigned short port, unsigned short data);
-unsigned int inportl(unsigned short port);
-void outportl(unsigned short port, unsigned int data);
-unsigned char inportb(unsigned short port);
-void outportb(unsigned short port, unsigned char data);
-void outportsm(unsigned short port, unsigned char* data, unsigned long size);
-void inportsm(unsigned short port, unsigned char* data, unsigned long size);
+uint16_t inports(uint16_t port);
+void outports(uint16_t port, uint16_t data);
+uint32_t inportl(uint16_t port);
+void outportl(uint16_t port, uint32_t data);
+uint8_t inportb(uint16_t port);
+void outportb(uint16_t port, uint8_t data);
+void outportsm(uint16_t port, uint8_t* data, uint32_t size);
+void inportsm(uint16_t port, uint8_t* data, uint32_t size);
 
 // Implemented in timer.c
 void init_timer(uint32_t frequency);

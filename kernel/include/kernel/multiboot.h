@@ -22,6 +22,8 @@
 #ifndef MULTIBOOT_HEADER
 #define MULTIBOOT_HEADER 1
 
+#include <stdint.h>
+
 #define MULTIBOOT_SEARCH                      8192 // How many bytes from the start of the file we search for the header.
 #define MULTIBOOT_HEADER_MAGIC          0x1BADB002 // The magic field should contain this.
 #define MULTIBOOT_BOOTLOADER_MAGIC      0x2BADB002 // This should be in %eax.
@@ -179,6 +181,8 @@ struct multiboot_mod_list
     multiboot_uint32_t pad;
 };
 typedef struct multiboot_mod_list multiboot_module_t;
+
+void print_multiboot_info(uint32_t magic, uint32_t addr);
 
 #endif // ASM_FILE
 
